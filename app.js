@@ -1,6 +1,7 @@
 const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
+const mailchimp = require('@mailchimp/mailchimp_marketing');
 
 const app = express();
 
@@ -12,12 +13,35 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + "/signup.html");
 })
 
-app.post('/', function(req,res){
-  var firstName = req.body.fName;
-  var lastName = req.body.lName;
-  var email = req.body.email;
+mailchimp.setConfig({
+  apiKey: "7d858017d8bc49cdcf0f35cd305f3f1e-us7",
+  server: "us7",
+});
 
-  
+app.post('/', function(req,res){
+  const firstName = req.body.fName;
+  const lastName = req.body.lName;
+  const email = req.body.email;
+
+  const listId= "2c0dec5712";
+
+  async function run(){
+    const response = await mailchimp.lists.addListMember(listId, {
+      email_address: email,
+      status: "subscribed",
+      merge_fields:{
+        FNAME: firstName,
+        LNAME: lastName
+      }
+    });
+
+    res.sendFile(__dirname + "/success.html")
+    console.log(
+    `Successfully created an audience. The audience id is ${response.id}.`
+  );
+
+  }
+  run().catch(e => res.sendFile(__dirname + "/failure.html"));
 });
 
 
