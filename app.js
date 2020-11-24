@@ -14,7 +14,7 @@ app.get('/', function(req, res){
 })
 
 mailchimp.setConfig({
-  apiKey: "7d858017d8bc49cdcf0f35cd305f3f1e-us7",
+  apiKey: "8ad169620965f2529099a643718be25d-us7",
   server: "us7",
 });
 
@@ -42,6 +42,10 @@ app.post('/', function(req,res){
 
   }
   run().catch(e => res.sendFile(__dirname + "/failure.html"));
+});
+
+app.post('/failure', function(req,res){
+  res.redirect('/');
 });
 
 
