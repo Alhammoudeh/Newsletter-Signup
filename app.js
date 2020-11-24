@@ -14,8 +14,8 @@ app.get('/', function(req, res){
 })
 
 mailchimp.setConfig({
-  apiKey: "8ad169620965f2529099a643718be25d-us7",
-  server: "us7",
+  apiKey: "[API_KEY]",
+  server: "[SERVER]",
 });
 
 app.post('/', function(req,res){
@@ -23,7 +23,7 @@ app.post('/', function(req,res){
   const lastName = req.body.lName;
   const email = req.body.email;
 
-  const listId= "2c0dec5712";
+  const listId= "[LIST_ID]";
 
   async function run(){
     const response = await mailchimp.lists.addListMember(listId, {
